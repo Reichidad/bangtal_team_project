@@ -210,9 +210,9 @@ class SimplePoker():
             self.money_control.add_bet_money(25)
             self.money_control.add_chip(chip_dir="./images/chip.png")
             self.money_control.show_chip(self.poker_scene, x=600, y=300)
-        if self.tutorial_flag:
-            showMessage("[튜토리얼 - Simple Poker]\n칩을 베팅했습니다. 하나의 칩은 25달러입니다. Game Start버튼을 한번 더 누르면 이번 게임의 결과를 확인할 수 있습니다.")
-        self.result_phase = True
+            if self.tutorial_flag:
+                showMessage("[튜토리얼 - Simple Poker]\n칩을 베팅했습니다. 하나의 칩은 25달러입니다. Game Start버튼을 한번 더 누르면 이번 게임의 결과를 확인할 수 있습니다.")
+            self.result_phase = True
 
     # exit button listener -> endGame()
     def exitGame(self, x, y, action):
