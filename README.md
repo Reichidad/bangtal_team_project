@@ -35,10 +35,23 @@
 ---
 ###Slot Machine
 
+![image](https://user-images.githubusercontent.com/25008566/101274903-2e5fc980-37e5-11eb-8258-fd53106c3b59.png)
+
+#### 사용 방법
+- Bet버튼을 통해 칩을 겁니다.
+- Spin버튼을 통해 플레이 합니다.
+
+#### 규칙
+- 총 10개의 문양이 있습니다.
+- 가로줄 빙고 1회당 배팅 금액의 10배 입니다.
+- 세로줄 빙고 1회당 배팅 금액의 20배 입니다.
+- 세로줄 빙고 7잭팟이 터질 경우 배팅 금액의 100배가 됩니다.
+- 세로줄 빙고 777잭팟이 터질 경우 배팅 금액의 1000배가 됩니다.
+
 ---
 ###Blackjack
 
-![game](https://user-images.githubusercontent.com/25008566/96364184-79117d80-1174-11eb-9395-7b3e0d61912a.PNG)
+![image](https://user-images.githubusercontent.com/25008566/101274921-420b3000-37e5-11eb-82f4-361b8c5cd262.png)
 
 유명한 카지노 게임인 블랙잭 게임입니다.
 https://ko.wikipedia.org/wiki/%EB%B8%94%EB%9E%99%EC%9E%AD
