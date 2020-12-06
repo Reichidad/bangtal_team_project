@@ -34,7 +34,14 @@ class MoneyControl():
 		self.update_money_gui()
 
 	def calc_money(self,multiply=2, score = []): # 이겼을 때 돈 추가, mul은 배율, 졌을 때도 0 해줘야함 (초기화)
-		self.money = self.money + self.bet_money*multiply
+		while score:
+			e = score.pop()
+			self.bet_money *= e
+			if not score:
+				break
+		else:
+			self.bet_money *= multiply
+		self.money = self.money + self.bet_money
 		self.bet_money = 0
 		self.update_money_gui()
 

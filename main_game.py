@@ -2,6 +2,7 @@ from bangtal import *
 from blackjack_class import Blackjack
 from interface import *
 from simple_poker import SimplePoker
+from slotmachine import SlotMachine
 
 IMG_DIR = "./images/"
 
@@ -15,7 +16,7 @@ main_money_control.set_money_gui(scene_main, 10, 10, "./images/number/")
 
 def click_slot(x, y, action):
     global scene_main
-    blackjack_game = Blackjack(scene_main,main_money_control)
+    slotmachine_game = SlotMachine(scene_main,main_money_control)
 
 def click_blackjack(x, y, action):
     global scene_main
