@@ -9,7 +9,9 @@ class SlotMachine():
         self.scene = Scene("Slot Machine", './images/slot/bg.png')
         self.scene.enter()
         self.moneycontrol = main_money_control
+        self.moneycontrol.set_money_gui(self.scene, 50, 20, "./images/number/")
         self.slot = [] #Object 모음
+        self.is_bet = False
 
         #spin button
         self.spin = Object('./images/slot/spin.png')
@@ -24,8 +26,8 @@ class SlotMachine():
         self.bet.show()
         
         #exit button
-        self.exit = Object('./images/slot/exit.png')
-        self.exit.locate(self.scene, 1200, 40)
+        self.exit = Object('./images/exit.png')
+        self.exit.locate(self.scene, 1050, 40)
         self.exit.onMouseAction = self.exit_clicked
         self.exit.show()
 
@@ -64,7 +66,7 @@ class SlotMachine():
                     temp[self.state[j][i]] += 1
             for e in temp.keys():
                 if temp[e] == M:
-                    score.append(2)
+                    score.append(10)
                     
         for j in range(M):
             temp = dict()
@@ -76,25 +78,31 @@ class SlotMachine():
             for e in temp.keys():
                 if temp[e] == N:
                     if e == 1:
-                        score.append(30)
-                    elif e == 2:
                         score.append(100)
+                    elif e == 2:
+                        score.append(1000)
                     else:
-                        score.append(4)
+                        score.append(20)
+        print(score)
         self.moneycontrol.calc_money(score = score)
         self.moneycontrol.cancle_bet()
         self.moneycontrol.reset_chip()
-
+        self.moneycontrol.update_money_gui()
                 
     def spin_clicked(self, x, y, action):
         N, M = 5, 3
-        self.reset_state(N, M)
-        self.get_score(N, M)
+        if self.is_bet:
+            self.reset_state(N, M)
+            self.get_score(N, M)
+            self.is_bet = False
+        else:
+            showMessage("먼저 배팅을 하세요.")
         
     def bet_clicked(self, x, y, action):
+        self.is_bet = True
         self.moneycontrol.add_bet_money(25)
         self.moneycontrol.add_chip()
-        self.moneycontrol.show_chip(self.scene, 200, 40)
+        self.moneycontrol.show_chip(self.scene, 400, 40)
         
     def exit_clicked(self, x, y, action):
         self.moneycontrol.set_money_gui(self.main, 10, 10, "./images/number/")
