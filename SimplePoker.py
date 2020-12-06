@@ -5,6 +5,7 @@ import interface
 
 
 class SimplePoker():
+    tutorial_flag = True
     money_control = interface.MoneyControl()
     poker_scene = Scene("", 'images/poker/background.png')
 
@@ -111,6 +112,8 @@ class SimplePoker():
         self.bet_btn.show()
         self.setHands()
         showMessage("Your cards are at the bottom.")
+        if self.tutorial_flag:
+            showMessage("[튜토리얼 - Simple Poker]\n당신의 패는 아래쪽, 상대(컴퓨터)의 패는 위쪽입니다.\nGame Start 버튼을 눌러보세요!")
 
     # reroll button listener -> a single game playing
     def rerollHands(self, x, y, action):
@@ -132,6 +135,8 @@ class SimplePoker():
                 self.com_hands[count].show()
 
             self.bet_phase = True
+            if self.tutorial_flag:
+                showMessage("[튜토리얼 - Simple Poker]\n당신과 상대의 패를 3장씩 오픈합니다.\n지금부터 원하는 만큼 베팅을 할 수 있습니다! Bet 버튼을 눌러보세요.")
 
         else:
             result_msg = ''
@@ -171,6 +176,9 @@ class SimplePoker():
         if self.bet_phase is True:
             self.bet_chips += 1
             showMessage("Your bet : " + str(self.bet_chips))
+        if self.tutorial_flag:
+            showMessage(
+                "[튜토리얼 - Simple Poker]\n칩을 베팅했습니다. 하나의 칩은 25달러입니다. Game Start버튼을 한번 더 누르면 이번 게임의 결과를 확인할 수 있습니다.")
 
     # exit button listener -> endGame()
     def exitGame(self, x, y, action):
