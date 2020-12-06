@@ -260,7 +260,7 @@ class Blackjack():
         self.hide_cards()
         self.show_cards(1)
 
-        showMessage("Dealer score : " + str(dealer_score)+"\nMy score : "+ str(player_score))
+        #showMessage("Dealer score : " + str(dealer_score)+"\nMy score : "+ str(player_score))
 
         self.hit_but.show()
         self.stand_but.show()

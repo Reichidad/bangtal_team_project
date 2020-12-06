@@ -102,7 +102,9 @@ class MoneyControl():
 		self.money_object.show()
 		self.money_ui_list = []
 		self.money_ui_list.append(self.money_object)
-
+		if self.money < 100:
+			showMessage("돈이 다 떨어지셨군요. 특별히 충전해드립니다!")
+			self.set_money(1000)
 		money = self.money
 		number_list = []
 		count = 0
@@ -119,6 +121,7 @@ class MoneyControl():
 			count += 1
 			money = int(money / 10)
 			print(num)
+
 
 
 if __name__ == "__main__":
