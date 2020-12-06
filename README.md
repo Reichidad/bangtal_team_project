@@ -15,16 +15,16 @@
 ##### Team Project in Opensource sw and python programming class 
 
 ---
-##Play
+## Play
 `pip install bangtal==0.24` 
 
 `python main_game.py`
 
 
 ---
-##Description 
+## Description 
 
-####main_game
+#### main_game
 
 - 게임을 선택할 수 있고, 다시 돌아올 수 있는 메인 화면입니다.
 - Money Control 객체를 통해  돈 상태를 공유하고 화면에 실시간으로 출력할 수 있도록 합니다.
@@ -33,7 +33,7 @@
 
     
 ---
-###Slot Machine
+### Slot Machine
 
 ![image](https://user-images.githubusercontent.com/25008566/101274903-2e5fc980-37e5-11eb-8258-fd53106c3b59.png)
 
@@ -49,7 +49,7 @@
 - 세로줄 빙고 777잭팟이 터질 경우 배팅 금액의 1000배가 됩니다.
 
 ---
-###Blackjack
+### Blackjack
 
 ![image](https://user-images.githubusercontent.com/25008566/101274921-420b3000-37e5-11eb-82f4-361b8c5cd262.png)
 
