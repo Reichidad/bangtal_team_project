@@ -17,7 +17,6 @@ class Blackjack():
     def __init__(self,scene_main,main_money_control):
         showMessage("Welcome to blackjack table")
         self.scene_main  = scene_main
-        self.main_money_control = main_money_control
         self.scene_table.enter()
         #self.money_control = MoneyControl(now_money)
         self.money_control = main_money_control
@@ -31,7 +30,7 @@ class Blackjack():
 
         self.exit = Object(self.IMG_DIR + "exit.png")
         self.exit.setScale(1)
-        self.exit.locate(self.scene_table,800, 650)
+        self.exit.locate(self.scene_table,1000, 20)
         self.exit.onMouseAction = self.click_exit
         self.exit.show()
 
@@ -213,8 +212,15 @@ class Blackjack():
         self.money_control.set_money_gui(self.scene_main, 10, 10, "./images/number/")
         self.money_control.update_money_gui()
 
+        self.hide_chip()
+        self.hide_cards()
         self.clear_scene()
         self.scene_main.enter()
+
+        self.start_but.hide()
+        self.bet_but.hide()
+        self.clear_but.hide()
+
 
     def click_start(self,x, y, action):
 
@@ -243,15 +249,11 @@ class Blackjack():
             game_end = True
             #self.hide_cards()
             self.show_cards(1)
-            print(len(self.card_obj_list))
             showMessage("!!!!!!!!! blackjack !!!!!!!!!")
             self.money_control.calc_money(2.5)
             self.hide_chip()
-            print(len(self.card_obj_list))
             #self.hide_cards()
-            print(len(self.card_obj_list))
             self.clear_scene()
-            print(len(self.card_obj_list))
             return 0
         self.hide_cards()
         self.show_cards(1)
@@ -297,16 +299,16 @@ class Blackjack():
             d_score = self.calc_score(self.dealers_cards)
             showMessage("My money : " + str(self.money_control.get_money()) + "$")
         if d_score > 21:
+            showMessage("Dealer Burst!!\n Get " + str(self.money_control.bet_money * 2) + "$"+ "\n" + self.str_score())
             self.money_control.calc_money(2)
-            showMessage("Dealer Burst!!\n Get " + str(self.money_control.bet_money * 2) + "$"+ " My money : " + str(self.money_control.get_money()) + "$\n" + self.str_score())
         elif d_score > p_score:
-            showMessage("Dealer Win!!\n Lose " + str(self.money_control.bet_money) + "$"+ " My money : " + str(self.money_control.get_money()) + "$\n" +self.str_score())
+            showMessage("Dealer Win!!\n Lose " + str(self.money_control.bet_money) + "$"+  "\n" +self.str_score())
         elif d_score < p_score:
+            showMessage("Player Win!!\n Get " + str(self.money_control.bet_money * 2) +"$"+ "\n" +self.str_score())
             self.money_control.calc_money(2)
-            showMessage("Player Win!!\n Get " + str(self.money_control.bet_money * 2) +"$"+ " My money : " + str(self.money_control.get_money()) + "$\n" +self.str_score())
         else:
             self.money_control.calc_money(1)
-            showMessage("Draw\n" + " My money : " + str(self.money_control.money) + "$")
+            showMessage("Draw\n" )
 
         self.hide_chip()
         self.show_cards(0)
