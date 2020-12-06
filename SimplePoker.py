@@ -9,8 +9,8 @@ class SimplePoker():
     money_control = interface.MoneyControl()
     poker_scene = Scene("", 'images/poker/background.png')
 
-    bet_chips = 0
     bet_phase = False
+    result_phase = False
 
     exit = Object("images/poker/exit.png")
     start = Object("images/poker/start.png")
@@ -85,8 +85,13 @@ class SimplePoker():
         self.start.onMouseAction = self.startPoker
         self.reroll_icon.onMouseAction = self.rerollHands
 
+    # run the simple poker game
     def runPoker(self):
+        # 테스트용 startGame
         startGame(self.poker_scene)
+
+        # 카지노 합쳐지면 poker scene으로 enter
+        # self.poker_scene.enter()
 
     # card image list initializing
     def init_card(self, directory, cards, arr):
@@ -95,14 +100,16 @@ class SimplePoker():
 
         return arr
 
+        # set hands with card backward
+
     def setHands(self):
         for i in range(5):
             self.hands[i].setImage(self.card_back)
             self.hands[i].locate(self.poker_scene, self.positions[i][0], self.positions[i][1])
-            self.hands[i].setScale(3)
+            self.hands[i].setScale(3.3)
             self.hands[i].show()
             self.com_hands[i].locate(self.poker_scene, self.com_positions[i][0], self.com_positions[i][1])
-            self.com_hands[i].setScale(3)
+            self.com_hands[i].setScale(3.3)
             self.com_hands[i].show()
 
     # start button listener -> hide start button / card game init
@@ -111,78 +118,111 @@ class SimplePoker():
         self.reroll_icon.show()
         self.bet_btn.show()
         self.setHands()
-        showMessage("Your cards are at the bottom.")
         if self.tutorial_flag:
             showMessage("[튜토리얼 - Simple Poker]\n당신의 패는 아래쪽, 상대(컴퓨터)의 패는 위쪽입니다.\nGame Start 버튼을 눌러보세요!")
 
     # reroll button listener -> a single game playing
     def rerollHands(self, x, y, action):
+
+        # start phase : before bet, show 3 hands
         if self.bet_phase is False:
+            # all cards backward
             for i in range(5):
                 self.hands[i].setImage(self.card_back)
                 self.com_hands[i].setImage(self.card_back)
-
+            # User hands for loop -> pick 3 numbers without duplications / save them into hands, hands_number
             for count in range(3):
                 current_card = self.numbers.pop(randint(0, 51 - count))
                 self.hands_number[count] = current_card
                 self.hands[count].setImage(self.card_images[current_card % 4][current_card % 13])
                 self.hands[count].show()
 
+            # Computer hands
             for count in range(3):
                 current_card = self.numbers.pop(randint(0, 48 - count))
                 self.com_hands_number[count] = current_card
                 self.com_hands[count].setImage(self.card_images[current_card % 4][current_card % 13])
                 self.com_hands[count].show()
 
+            # bet phase flag on
             self.bet_phase = True
+            # tutorial message
             if self.tutorial_flag:
                 showMessage("[튜토리얼 - Simple Poker]\n당신과 상대의 패를 3장씩 오픈합니다.\n지금부터 원하는 만큼 베팅을 할 수 있습니다! Bet 버튼을 눌러보세요.")
 
-        else:
+        # result phase : after bet, show 2 more hands and result
+        elif self.result_phase:
             result_msg = ''
 
-            # for loop -> pick 5 numbers without duplications / save them into hands, hands_number
+            # User hands for loop -> pick 2 numbers without duplications / save them into hands, hands_number
             for count in range(3, 5):
                 current_card = self.numbers.pop(randint(0, 45 - count))
                 self.hands_number[count] = current_card
                 self.hands[count].setImage(self.card_images[current_card % 4][current_card % 13])
                 self.hands[count].show()
-            # show the hand result
-            player_hand, player_msg = self.handResult(self.hands_number)
-            result_msg += "Your hand : " + player_msg + "\n"
 
+            # result message edit
+            player_hand, player_msg = self.handResult(self.hands_number)
+            result_msg += "플레이어 : " + player_msg + "\n"
+
+            # Computer hands
             for count in range(3, 5):
                 current_card = self.numbers.pop(randint(0, 43 - count))
                 self.com_hands_number[count] = current_card
                 self.com_hands[count].setImage(self.card_images[current_card % 4][current_card % 13])
                 self.com_hands[count].show()
 
+            # result message edit
             com_hand, com_msg = self.handResult(self.com_hands_number)
-            result_msg += "Computer hand : " + com_msg + "\n"
+            result_msg += "상대(컴퓨터) : " + com_msg + "\n"
+
+            # reset flag and values
             self.bet_phase = False
             self.bet_chips = 0
             self.numbers = [i for i in range(52)]
+            self.tutorial_flag = False
+            self.result_phase = False
 
+            # result message edit
             if player_hand < com_hand:
-                result_msg += "You win!"
+                result_msg += "당신이 이겼습니다! 2 배의 상금이 주어집니다!"
+                self.money_control.calc_money(2)
             elif player_hand == com_hand:
-                result_msg += "Draw!"
+                result_msg += "비겼습니다! 본전!"
+                self.money_control.calc_money(1)
             else:
-                result_msg += "You lose!"
+                result_msg += "당신이 졌습니다!"
+                self.money_control.calc_money(0)
+
+            result_msg += "\nGame Start 버튼을 눌러 게임을 반복할 수 있습니다."
+
+            # reset money_control
+            self.money_control.cancle_bet()
+            self.money_control.reset_chip()
+            # show result
             showMessage(result_msg)
+
+        # no bet in bet phase
+        else:
+            showMessage("최소 한 번은 베팅해주세요.")
 
     # bet button listener
     def betOnce(self, x, y, action):
         if self.bet_phase is True:
-            self.bet_chips += 1
-            showMessage("Your bet : " + str(self.bet_chips))
+            self.money_control.add_bet_money(25)
+            self.money_control.add_chip(chip_dir="./images/chip.png")
+            self.money_control.show_chip(self.poker_scene, x=600, y=300)
         if self.tutorial_flag:
             showMessage(
                 "[튜토리얼 - Simple Poker]\n칩을 베팅했습니다. 하나의 칩은 25달러입니다. Game Start버튼을 한번 더 누르면 이번 게임의 결과를 확인할 수 있습니다.")
+        self.result_phase = True
 
     # exit button listener -> endGame()
     def exitGame(self, x, y, action):
+        # 테스트용 endGame
         endGame()
+        # 카지노 합쳐지면 main scene으로 enter
+        # need some code
 
     # poker rules calculation
     def handResult(self, hands_number):
@@ -248,5 +288,7 @@ class SimplePoker():
             return 10, "Top"
 
 
+# 이렇게 객체 선언하고 runPoker()로 실행하면 됨
+# 객체 선언할 때 현재 money_control 잔액 넘겨주면 됨
 poker = SimplePoker(10000)
 poker.runPoker()
