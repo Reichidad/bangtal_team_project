@@ -12,6 +12,9 @@
   
  bangtal 라이브러리를 이용해 만든 게임입니다.
  
+ - 게임 플레이 Youtube Link 
+    - https://www.youtube.com/watch?v=9ycpFSbQVko&feature=youtu.be
+ 
 ##### Team Project in Opensource sw and python programming class 
 
 ---
