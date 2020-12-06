@@ -13,18 +13,17 @@ main_money_control.set_money_gui(scene_main, 10, 10, "./images/number/")
 
 
 def click_slot(x, y, action):
-    global now_money
-    #blackjack_game = Blackjack(now_money)
+    global scene_main
+    blackjack_game = Blackjack(scene_main,main_money_control)
 
 def click_blackjack(x, y, action):
-    global now_money, scene_main
-    blackjack_game = Blackjack(scene_main,main_money_control,main_money_control.get_money())
-
+    global scene_main
+    blackjack_game = Blackjack(scene_main,main_money_control)
 
 
 def click_poker(x, y, action):
-    global now_money
-    #blackjack_game = Blackjack(now_money)
+    global scene_main
+    blackjack_game = Blackjack(scene_main, main_money_control)
 
 
 slot_button = Object(IMG_DIR + "button.png")

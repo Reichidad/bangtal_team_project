@@ -14,7 +14,7 @@ class Blackjack():
 
 
 
-    def __init__(self,scene_main,main_money_control,now_money=10000):
+    def __init__(self,scene_main,main_money_control):
         showMessage("Welcome to blackjack table")
         self.scene_main  = scene_main
         self.main_money_control = main_money_control
