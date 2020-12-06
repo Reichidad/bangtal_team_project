@@ -4,7 +4,6 @@ import random
 import os
 
 
-
 class MoneyControl():
 	money = 0
 	bet_money = 0
@@ -109,12 +108,6 @@ class MoneyControl():
 			print(num)
 
 
-
-
-
-
-
-
 if __name__ == "__main__":
 
 	## 시작할 때
@@ -138,20 +131,3 @@ if __name__ == "__main__":
 	money_control.set_money_gui(scene_table, 100, 100, "./images/number/") # 출력할 scene 및 x,y, img dir
 
 	money_control.update_money_gui() # money 따라 gui 업데이트. 이거는 money 계산할 때마다 자동으로 실행되게 해놨음.
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
