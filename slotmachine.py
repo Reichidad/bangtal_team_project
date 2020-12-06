@@ -12,6 +12,7 @@ class SlotMachine():
         self.moneycontrol.set_money_gui(self.scene, 50, 20, "./images/number/")
         self.slot = [] #Object 모음
         self.is_bet = False
+        showMessage("가로 한 줄: 배팅 금액 10배 \n 세로 한 줄: 배팅 금액 20배 \n  세로 7 한 줄: 배팅 금액 100배 \n 세로 777 한 줄: 배팅 금액 1000배")
 
         #spin button
         self.spin = Object('./images/slot/spin.png')

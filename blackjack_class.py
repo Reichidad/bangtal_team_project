@@ -250,6 +250,8 @@ class Blackjack():
             #self.hide_cards()
             self.show_cards(1)
             showMessage("!!!!!!!!! blackjack !!!!!!!!!")
+            win_sound = Sound('./audio/win.wav')
+            win_sound.play(False)
             self.money_control.calc_money(2.5)
             self.hide_chip()
             #self.hide_cards()
@@ -300,11 +302,15 @@ class Blackjack():
             showMessage("My money : " + str(self.money_control.get_money()) + "$")
         if d_score > 21:
             showMessage("Dealer Burst!!\n Get " + str(self.money_control.bet_money * 2) + "$"+ "\n" + self.str_score())
+            win_sound = Sound('./audio/win.wav')
+            win_sound.play(False)
             self.money_control.calc_money(2)
         elif d_score > p_score:
             showMessage("Dealer Win!!\n Lose " + str(self.money_control.bet_money) + "$"+  "\n" +self.str_score())
         elif d_score < p_score:
             showMessage("Player Win!!\n Get " + str(self.money_control.bet_money * 2) +"$"+ "\n" +self.str_score())
+            win_sound = Sound('./audio/win.wav')
+            win_sound.play(False)
             self.money_control.calc_money(2)
         else:
             self.money_control.calc_money(1)

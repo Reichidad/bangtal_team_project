@@ -182,6 +182,8 @@ class SimplePoker():
             # result message edit
             if player_hand < com_hand:
                 result_msg += "당신이 이겼습니다! 2 배의 상금이 주어집니다!"
+                win_sound = Sound('./audio/win.wav')
+                win_sound.play(False)
                 self.money_control.calc_money(2)
             elif player_hand == com_hand:
                 result_msg += "비겼습니다! 본전!"
