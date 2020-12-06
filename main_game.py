@@ -8,7 +8,7 @@ IMG_DIR = "./images/"
 
 
 scene_main = Scene("main game",IMG_DIR + "main_background.png")
-start_money=10000
+start_money=1000
 main_money_control = MoneyControl(start_money)
 main_sound = Sound('./audio/main.mp3')
 main_sound.play(True)
