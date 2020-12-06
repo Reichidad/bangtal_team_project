@@ -60,7 +60,7 @@ class Slot_Machine():
                     temp[self.state] += 1
             for e in temp.keys():
                 if temp[e] == M:
-                    score.appned(3)
+                    score.appned(2)
                     
         for j in range(M):
             temp = dict()
@@ -71,7 +71,12 @@ class Slot_Machine():
                     temp[self.state] += 1
             for e in temp.keys():
                 if temp[e] == N:
-                    score.appned(16)
+                    if e == 1:
+                        score.append(30)
+                    elif e == 2:
+                        score.append(100)
+                    else:
+                        score.appned(4)
         self.moneycontrol.calc_money(score = score)
         self.moneycontrol.cancle_bet()
         self.moneycontrol.reset_chip()
