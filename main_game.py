@@ -10,6 +10,8 @@ IMG_DIR = "./images/"
 scene_main = Scene("main game",IMG_DIR + "main_background.png")
 start_money=10000
 main_money_control = MoneyControl(start_money)
+main_sound = Sound('./audio/main.mp3')
+main_sound.play(True)
 main_money_control.set_money_gui(scene_main, 10, 10, "./images/number/")
 
 
