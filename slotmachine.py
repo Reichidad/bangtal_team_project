@@ -83,18 +83,26 @@ class SlotMachine():
                         score.append(1000)
                     else:
                         score.append(20)
-        print(score)
+        if score:
+            check = True
+        else:
+            check = False
         self.moneycontrol.calc_money(score = score)
         self.moneycontrol.cancle_bet()
         self.moneycontrol.reset_chip()
         self.moneycontrol.update_money_gui()
+        return check
                 
     def spin_clicked(self, x, y, action):
         N, M = 5, 3
         if self.is_bet:
             self.reset_state(N, M)
-            self.get_score(N, M)
+            check = self.get_score(N, M)
             self.is_bet = False
+            if check:
+                showMessage("당첨! 축하드려요.")
+            else:
+                showMessage("아쉽게도 꽝이에요.")
         else:
             showMessage("먼저 배팅을 하세요.")
         

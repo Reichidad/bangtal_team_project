@@ -19,6 +19,8 @@ class MoneyControl():
 		self.money = num
 
 	def add_bet_money(self,add_bet_money,show=True): # 돈 배팅
+		bet_sound = Sound('./audio/bet.wav')
+		bet_sound.play(False)
 		self.money -= add_bet_money
 		self.bet_money = self.bet_money + add_bet_money
 		self.update_money_gui()
@@ -42,7 +44,8 @@ class MoneyControl():
 			while score:
 				e = score.pop()
 				self.bet_money *= e
-
+			win_sound = Sound('./audio/win.wav')
+			win_sound.play(False)
 
 		self.money = self.money + self.bet_money
 		self.bet_money = 0
