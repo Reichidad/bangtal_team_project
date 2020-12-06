@@ -3,10 +3,8 @@ import os
 from random import *
 import interface
 
-
 class SimplePoker():
     tutorial_flag = True
-    money_control = interface.MoneyControl()
     poker_scene = Scene("", 'images/poker/background.png')
 
     bet_phase = False
@@ -47,8 +45,9 @@ class SimplePoker():
     com_hands_number = [0, 0, 0, 0, 0]
     com_positions = [(40, 400), (190, 400), (340, 400), (490, 400), (640, 400)]
 
-    def __init__(self, start_money):
-        self.money_control.set_money(start_money)
+    def __init__(self, main_scene, main_money_control):
+        self.scene_main = main_scene
+        self.money_control = main_money_control
         self.money_control.set_money_gui(self.poker_scene, 750, 630, "./images/number/")
         self.money_control.update_money_gui()
 
@@ -67,7 +66,7 @@ class SimplePoker():
         # bet button
         self.bet_btn.locate(self.poker_scene, 250, 300)
         self.bet_btn.setScale(0.5)
-
+     
         # card order edit to : a, 2, 3, 4, 5, 6, 7, 8, 9, 10, j, q ,k
         self.cards[0], self.cards[9] = self.cards[9], self.cards[0]
         self.cards[11], self.cards[12] = self.cards[12], self.cards[11]
@@ -84,24 +83,19 @@ class SimplePoker():
         self.exit.onMouseAction = self.exitGame
         self.start.onMouseAction = self.startPoker
         self.reroll_icon.onMouseAction = self.rerollHands
-
+    
     # run the simple poker game
     def runPoker(self):
-        # 테스트용 startGame
-        startGame(self.poker_scene)
-
-        # 카지노 합쳐지면 poker scene으로 enter
-        # self.poker_scene.enter()
+        self.poker_scene.enter()
 
     # card image list initializing
     def init_card(self, directory, cards, arr):
         for card in cards:
             arr.append(directory + '/' + card)
 
-        return arr
+        return arr 
 
-        # set hands with card backward
-
+    # set hands with card backward
     def setHands(self):
         for i in range(5):
             self.hands[i].setImage(self.card_back)
@@ -114,10 +108,11 @@ class SimplePoker():
 
     # start button listener -> hide start button / card game init
     def startPoker(self, x, y, action):
-        self.start.hide()
+        self.start.hide() 
         self.reroll_icon.show()
         self.bet_btn.show()
         self.setHands()
+        self.numbers = [i for i in range(52)]
         if self.tutorial_flag:
             showMessage("[튜토리얼 - Simple Poker]\n당신의 패는 아래쪽, 상대(컴퓨터)의 패는 위쪽입니다.\nGame Start 버튼을 눌러보세요!")
 
@@ -131,6 +126,7 @@ class SimplePoker():
                 self.hands[i].setImage(self.card_back)
                 self.com_hands[i].setImage(self.card_back)
             # User hands for loop -> pick 3 numbers without duplications / save them into hands, hands_number
+            print(len(self.numbers))
             for count in range(3):
                 current_card = self.numbers.pop(randint(0, 51 - count))
                 self.hands_number[count] = current_card
@@ -149,11 +145,11 @@ class SimplePoker():
             # tutorial message
             if self.tutorial_flag:
                 showMessage("[튜토리얼 - Simple Poker]\n당신과 상대의 패를 3장씩 오픈합니다.\n지금부터 원하는 만큼 베팅을 할 수 있습니다! Bet 버튼을 눌러보세요.")
-
+        
         # result phase : after bet, show 2 more hands and result
         elif self.result_phase:
             result_msg = ''
-
+        
             # User hands for loop -> pick 2 numbers without duplications / save them into hands, hands_number
             for count in range(3, 5):
                 current_card = self.numbers.pop(randint(0, 45 - count))
@@ -182,7 +178,7 @@ class SimplePoker():
             self.numbers = [i for i in range(52)]
             self.tutorial_flag = False
             self.result_phase = False
-
+    
             # result message edit
             if player_hand < com_hand:
                 result_msg += "당신이 이겼습니다! 2 배의 상금이 주어집니다!"
@@ -213,16 +209,36 @@ class SimplePoker():
             self.money_control.add_chip(chip_dir="./images/chip.png")
             self.money_control.show_chip(self.poker_scene, x=600, y=300)
         if self.tutorial_flag:
-            showMessage(
-                "[튜토리얼 - Simple Poker]\n칩을 베팅했습니다. 하나의 칩은 25달러입니다. Game Start버튼을 한번 더 누르면 이번 게임의 결과를 확인할 수 있습니다.")
+            showMessage("[튜토리얼 - Simple Poker]\n칩을 베팅했습니다. 하나의 칩은 25달러입니다. Game Start버튼을 한번 더 누르면 이번 게임의 결과를 확인할 수 있습니다.")
         self.result_phase = True
 
     # exit button listener -> endGame()
     def exitGame(self, x, y, action):
-        # 테스트용 endGame
-        endGame()
-        # 카지노 합쳐지면 main scene으로 enter
-        # need some code
+        # 게임 초기화
+        self.start.show() 
+        self.reroll_icon.hide()
+        self.bet_btn.hide()
+
+         # reset flag and values
+        self.bet_phase = False
+        self.bet_chips = 0
+        self.numbers = [i for i in range(52)]
+        self.tutorial_flag = True
+        self.result_phase = False
+
+        for i in range(5):
+            self.hands[i].setImage(self.card_back)
+            self.com_hands[i].setImage(self.card_back)
+            self.hands[i].hide()
+            self.com_hands[i].hide()
+
+        # reset money_control
+        self.money_control.calc_money(0)
+        self.money_control.cancle_bet()
+        self.money_control.reset_chip()
+        self.money_control.set_money_gui(self.scene_main, 10, 10, "./images/number/")
+        self.money_control.update_money_gui()
+        self.scene_main.enter()
 
     # poker rules calculation
     def handResult(self, hands_number):
@@ -230,7 +246,7 @@ class SimplePoker():
         current_hand_numbers = []
 
         for num in hands_number:
-            # 0~ 51 -> kinds / numbers
+            # 0~ 51 -> kinds / numbers 
             current_hand_kinds.append(num % 4)
             current_hand_numbers.append(num % 13)
 
@@ -245,7 +261,7 @@ class SimplePoker():
         # four of a kind -> 6
         pair_counter = 0
         for n1 in range(0, 4):
-            for n2 in range(n1 + 1, 5):
+            for n2 in range(n1+1, 5):
                 if current_hand_numbers[n1] == current_hand_numbers[n2]:
                     pair_counter = pair_counter + 1
 
@@ -257,11 +273,11 @@ class SimplePoker():
         # straight counter
         # 4 / pair counter == 0 -> straight
         straight_counter = current_hand_numbers[4] - current_hand_numbers[0]
-        if pair_counter != 0:
+        if pair_counter != 0 :
             straight_counter = -1
         # straight with ace
         # Exception handling for straights with aces
-        straight_with_ace = [[0, 1, 2, 11, 12],
+        straight_with_ace = [[0, 1, 2 ,11 ,12],
                              [0, 1, 10, 11, 12],
                              [0, 1, 2, 3, 12]]
 
@@ -276,7 +292,7 @@ class SimplePoker():
             return 4, "Full House"
         elif flush_counter == 1:
             return 5, "Flush"
-        elif straight_counter == 4 or (current_hand_numbers in straight_with_ace):
+        elif straight_counter == 4 or (current_hand_numbers in straight_with_ace) :
             return 6, "Straight"
         elif pair_counter == 3:
             return 7, "Three of a kind"
@@ -287,8 +303,5 @@ class SimplePoker():
         else:
             return 10, "Top"
 
-
 # 이렇게 객체 선언하고 runPoker()로 실행하면 됨
 # 객체 선언할 때 현재 money_control 잔액 넘겨주면 됨
-poker = SimplePoker(10000)
-poker.runPoker()
