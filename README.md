@@ -75,7 +75,7 @@ https://ko.wikipedia.org/wiki/%EB%B8%94%EB%9E%99%EC%9E%AD
 - 카드와 칩 오브젝트 관리
 
 ---
-###Simple Poker
+### Simple Poker
 ![image](https://user-images.githubusercontent.com/25008566/101274831-a2e63880-37e4-11eb-97b4-077954cd5fc6.png)
 
 컴퓨터를 상대로 즐기는 간단한 포커 게임입니다.
