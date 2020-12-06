@@ -4,21 +4,35 @@ from interface import MoneyControl
 
 
 class Slot_Machine():
-    def __init__(self, open_path = 'Images/slot/bg.png'):
-        self.scene = Scene("Slot Machine", open_path)
-        self.reset()
-        self.slot = []
-        self.spin = Object('Images/slot/spin.png')
+    def __init__(self, scene_main, main_money_control):
+        self.main = scene_main
+        self.scene = Scene("Slot Machine", './images/slot/bg.png')
+        self.scene.enter()
+        self.moneycontrol = main_money_control
+        self.slot = [] #Object 모음
+        
+        #spin button
+        self.spin = Object('./images/slot/spin.png')
         self.spin.locate(self.scene, 0, 0)
         self.spin.onMouseAction = spin_clicked
-        self.moneycontrol = MoneyControl
-    def reset_state(self):
-        N, M = 5, 3
         
+        #bet button
+        self.bet = Object('./images/slot/bet.png')
+        self.bet.locate(self.scene, 0, 0)
+        self.bet.onMouseAction = bet_clicked
+        
+        #exit button
+        self.exit = Object('./images/slot/exit.png')
+        self.exit.locate(self.scene, 0, 0)
+        self.exit.onMouseAction = exit_clicked
+
+        
+        
+    def reset_state(self, N, M):        
         self.state = [[random.randint(1,9) for _ in range(N)] for _ in range(M)]
-        icon_path = ['Images/slot/01.png', 'Images/slot/02.png', 'Images/slot/03.png',
-                     'Images/slot/04.png', 'Images/slot/05.png', 'Images/slot/06.png',
-                     'Images/slot/07.png', 'Images/slot/08.png', 'Images/slot/09.png', 'Images/slot/10.png']
+        icon_path = ['./images/slot/01.png', './images/slot/02.png', './images/slot/03.png',
+                     './images/slot/04.png', './images/slot/05.png', './images/slot/06.png',
+                     './images/slot/07.png', './images/slot/08.png', './images/slot/09.png', './images/slot/10.png']
         
         dx, dy, init_x, init_y = 0, 0, 0, 0
         
@@ -34,11 +48,50 @@ class Slot_Machine():
                 slot.locate(self.scene, x, y)
                 slot.show()
                 self.slot.append(show)
+
+    def get_score(self, N, M):
+        score = []
+        for i in range(N):
+            temp = dict()
+            for j in range(M):
+                if not self.state[j][i] in temp:
+                    temp.update({self.state:1})
+                else:
+                    temp[self.state] += 1
+            for e in temp.keys():
+                if temp[e] == M:
+                    score.appned(3)
+                    
+        for j in range(M):
+            temp = dict()
+            for i in range(N):
+                if not self.state[j][i] in temp:
+                    temp.update({self.state:1})
+                else:
+                    temp[self.state] += 1
+            for e in temp.keys():
+                if temp[e] == N:
+                    score.appned(16)
+        self.moneycontrol.calc_money(score = score)
+        self.moneycontrol.cancle_bet()
+        self.moneycontrol.reset_chip()
+
                 
     def spin_clicked(self, x, y, action):
-        self.reset_state()
-    
-    def get_score(self):
+        N, M = 5, 3
+        self.reset_state(N, M)
+        self.get_score(N, M)
         
-            
+    def bet_clicked(self, x, y, action):
+        self.moneycontrol.add_bet_money(25)
+        self.moneycontrol.add_chip()
+        self.moneycontrol.show_chip()
+        
+    def exit_clicked(self, x, y, action):
+        self.moneycontrol.set_money_gui(self.main, 10, 10, "./images/number/")
+        self.moneycontrol.update_money_gui()
+        self.main.enter()
+        
+    
+        
             
